@@ -16,9 +16,45 @@
 #
 import webapp2
 
+# html boilerplate for the top of every page
+page_header = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rot13</title>
+</head>
+<body>
+    <h1>Enter some text to encode</h1>
+"""
+
+# html boilerplate for the bottom of every page
+page_footer = """
+</body>
+</html>
+"""
+
+#rot13 function
+def rot13(text):
+    for i in text:
+        print 
+
 class MainHandler(webapp2.RequestHandler):
+    """ Handles requests coming in to '/' (the root of our site)
+        e.g. www.rot13.com/
+    """
     def get(self):
-        self.response.write('Hello world!')
+        # a form to encrypt text
+        form = """
+        <form method="post">
+            <textarea name="text" style="height: 100px; width: 400px;"></textarea>
+            <br>
+            <input type="submit">
+        </form>
+        """
+        #add the form to the body of the html document
+        page_text = page_header + form + page_footer
+        self.response.write(page_text)
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
