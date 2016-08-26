@@ -15,13 +15,14 @@
 # limitations under the License.
 #
 import webapp2
+from caesar import encrypt
 
 # html boilerplate for the top of every page
 page_header = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rot13</title>
+    <title>Caesar</title>
 </head>
 <body>
     <h1>Enter some text to encode</h1>
@@ -33,27 +34,42 @@ page_footer = """
 </html>
 """
 
-#rot13 function
-def rot13(text):
-    for i in text:
-        print 
+
 
 class MainHandler(webapp2.RequestHandler):
     """ Handles requests coming in to '/' (the root of our site)
-        e.g. www.rot13.com/
+        e.g. www.caesar.com/
     """
     def get(self):
+
+
         # a form to encrypt text
-        form = """
+        my_form = """
         <form method="post">
+            <label>
+                Rotate by: <input type="number" name="rotate-number"/>
+            </label>
             <textarea name="text" style="height: 100px; width: 400px;"></textarea>
             <br>
             <input type="submit">
         </form>
         """
         #add the form to the body of the html document
-        page_text = page_header + form + page_footer
+        page_text = page_header + my_form + page_footer
         self.response.write(page_text)
+
+    def post(self):
+        # look inside the request to figure out what the user typed
+        rotate_number = self.request.get("rotate-number")
+        text_to_encrypt = self.request.get("text")
+
+        # use caesar to encrypt the text in the box but the rotate number
+        encrypted_text = encrypt(text_to_encrypt, 4)
+
+        #build the page content
+        response = page_header + my_form + page_footer
+        self.response.write(response)
+
 
 
 app = webapp2.WSGIApplication([
